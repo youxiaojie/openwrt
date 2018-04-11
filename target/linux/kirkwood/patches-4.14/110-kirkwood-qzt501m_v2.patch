@@ -1,0 +1,320 @@
+--- /dev/null	2018-03-29 09:14:22.503331393 +0800
++++ b/arch/arm/boot/dts/kirkwood-qzt501m_v2.dts	2018-03-29 12:31:45.332028000 +0800
+@@ -0,0 +1,317 @@
++/* Device tree file for the QiZhiTong 501M V2 box.
++ *
++ * Copyright (c) 2015-2017  bodhi <mibodhi@gmail.com>
++ *                                          wacke <cao88yu@gmail.com>
++ *
++ * Based on
++ * Marvell RD88F6181 A Board descrition
++ * Andrew Lunn <andrew@lunn.ch>
++*/
++
++
++/dts-v1/;
++#include <dt-bindings/interrupt-controller/irq.h>
++#include "kirkwood.dtsi"
++#include "kirkwood-6281.dtsi"
++
++/ {
++	model = "QiZhiTong 501M V2";
++	compatible = "qizhitong,501m_v2","marvell,rd88f6281-a", "marvell,rd88f6281","marvell,kirkwood-88f6281", "marvell,kirkwood";
++
++	chosen {
++		bootargs = "console=ttyS0,9600n8 earlyprintk";
++	};
++
++
++
++
++	/*leds {
++		compatible = "gpio-leds";
++		j10p3 {
++			label = "j10p3";
++			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
++		};
++
++	};*/
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reset-button {
++			label = "Reset Button";
++			linux,code = <KEY_RESTART>;
++			gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
++		};
++		power-button {
++			label = "Power Button";
++			linux,code = <KEY_POWER>;
++			gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
++		};
++
++	};
++
++/*	gpio-poweroff {
++		compatible = "gpio-poweroff";
++		pinctrl-0 = <&pmx_pwr>;
++		pinctrl-names = "default";
++		gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
++	};
++*/
++
++
++
++};
++
++&nand {
++	status = "okay";
++
++	partition@0 {
++		label = "u-boot";
++		reg = <0x0000000 0x100000>;
++		read-only;
++	};
++
++	partition@100000 {
++		label = "kernel";
++		reg = <0x0100000 0x300000>;
++	};
++
++	partition@400000 {
++		label = "ubi";
++		reg = <0x0400000 0x3c00000>;
++	};
++};
++
++&mdio {
++	status = "okay";
++
++	switch0: switch@0a {
++		compatible = "marvell,mv88e6085";
++		/*pinctrl-0 = <&pmx_sw0_int>;
++		pinctrl-names = "default";*/
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x0a>;
++		interrupts = <10 IRQ_TYPE_EDGE_FALLING>;
++		interrupt-parent = <&gpio1>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++        
++		ports {
++
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++				label = "lan1";
++				phy-handle = <&sw0phy0>;
++			};
++
++			port@1 {
++				reg = <1>;
++				label = "lan2";
++				phy-handle = <&sw0phy1>;
++			};
++
++			port@2 {
++				reg = <2>;
++				label = "lan3";
++				phy-handle = <&sw0phy2>;
++			};
++
++			port@3 {
++				reg = <3>;
++				label = "lan4";
++				phy-handle = <&sw0phy3>;
++			};
++
++			port@4 {
++				reg = <4>;
++				label = "aux";
++				phy-handle = <&sw0phy4>;
++			};
++
++			port@5 {
++				reg = <5>;
++				label = "cpu";
++				ethernet = <&eth0port>;
++				fixed-link {
++					speed = <1000>;
++					full-duplex;
++				};
++			};
++		};
++	
++		mdio {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			sw0phy0: switch0phy0@0 {
++				reg = <0>;
++				interrupt-parent = <&switch0>;
++				interrupts = <0 IRQ_TYPE_EDGE_RISING>;
++			};
++			sw0phy1: switch0phy1@1 {
++				reg = <1>;
++				interrupt-parent = <&switch0>;
++				interrupts = <1 IRQ_TYPE_EDGE_RISING>;
++			};
++			sw0phy2: switch0phy2@2 {
++				reg = <2>;
++				interrupt-parent = <&switch0>;
++				interrupts = <2 IRQ_TYPE_EDGE_RISING>;
++			};
++			sw0phy3: switch0phy3@3 {
++				reg = <3>;
++				interrupt-parent = <&switch0>;
++				interrupts = <3 IRQ_TYPE_EDGE_RISING>;
++			};
++			sw0phy4: switch0phy4@4 {
++				reg = <4>;
++				interrupt-parent = <&switch0>;
++				interrupts = <4 IRQ_TYPE_EDGE_RISING>;
++			};
++				
++		};
++	};
++
++	ethphy1: ethernet-phy@1 {
++		reg = <1>;
++	};	
++};
++
++
++
++&pinctrl{
++	pinctrl-names = "default";
++
++
++	pmx_sysrst:pmx-sysrst {
++		marvell,pins = "mpp6";
++		marvell,function = "sysrst";
++	};
++
++	pmx_tp1:pmx-tp1 {
++		marvell,pins = "mpp7";
++		marvell,function = "gpo";	
++	};
++
++	pmx_sdio_cd: pmx-sdio-cd {
++		marvell,pins = "mpp28";
++		marvell,function = "gpio";
++	};
++
++	pmx_tp3:pmx-tp3 {
++		marvell,pins = "mpp29";
++		marvell,function = "gpio";
++	};
++
++	pmx_tp4:pmx-tp4 {
++		marvell,pins = "mpp34";
++		marvell,function = "gpo";	
++	};
++
++	pmx_sata0:pmx-sata0 {
++		marvell,pins = "mpp35";
++		marvell,function = "sata0";
++	};
++
++	pmx_sw2:pmx-sw2 {
++		marvell,pins = "mpp36";
++		marvell,function = "gpio";
++	};
++
++	pmx_j14:pmx-j14p2 {
++		marvell,pins = "mpp38";
++		marvell,function = "gpio";
++	};
++
++	pmx_pwr:pmx-power-sw {
++		marvell,pins = "mpp40";
++		marvell,function = "gpio";
++	};/* ? 1=off 0=on*/
++
++	pmx_sw0_int:pmx-switch0-int {
++		marvell,pins = "mpp42";
++		marvell,function = "gpio";
++	};
++	
++	pmx_sw1:pmx-sw1 {
++		marvell,pins = "mpp44";
++		marvell,function = "gpio";
++	};
++
++	pmx_j10:pmx-j10p5to1 {
++		marvell,pins = "mpp45","mpp46","mpp47","mpp48","mpp49";
++		marvell,function = "gpio";	
++	};
++	
++	pmx_mpps:pmx_mpps {
++		marvell,pins = "mpp37","mpp39","mpp41","mpp43";
++		marvell,function = "gpio";	
++	};
++
++
++};
++
++
++&i2c0 {
++	status = "okay";
++	eeprom@50 {
++		compatible = "atmel,24c64";
++		reg = <0x50>;
++		pagesize = <32>;
++	};
++};
++
++&sdio {
++	status = "okay";
++	pinctrl-0 = <&pmx_sdio &pmx_sdio_cd>;
++	pinctrl-names = "default";
++	cd-gpios = <&gpio0 28 GPIO_ACTIVE_HIGH>;
++	/* No WP GPIO */
++};
++
++
++&sata {
++	status = "okay";
++	nr-ports = <1>;
++};
++
++&uart0 {
++	status = "okay";
++};
++
++&pciec {
++	status = "okay";
++};
++
++	&pcie0 {
++		status = "okay";
++		
++		/*wifi@168c,002b {
++		compatible = "pci168c,002b";
++		reg = <0x7000 0 0 0 0x1000>;*/
++		/*qca,no-eeprom;*/
++		/*};*/
++	};
++
++/* eth0 is connected to a Marvell 88E6161 switch, without a PHY. So set
++ * fixed speed and duplex.
++ */
++&eth0 {
++	status = "okay";	
++};
++	&eth0port {
++		speed = <1000>;
++		duplex = <1>;
++	};
++
++&eth1 {
++	status = "okay";	
++};
++	&eth1port {
++    	phy-handle = <&ethphy1>;
++	};
