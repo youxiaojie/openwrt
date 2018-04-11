@@ -136,4 +136,24 @@ define Device/zyxel_nsa325
 endef
 TARGET_DEVICES += zyxel_nsa325
 
+
+UBI_OPTS := -m 512 -p 16384 -s 256
+UBIFS_OPTS := -m 512 -e 15872 -c 5600
+define Device/qizhitong_501m_v2
+  DEVICE_TITLE :=QiZhiTong 501M V2
+  DEVICE_DTS := kirkwood-qzt501m_v2
+  DEVICE_PACKAGES := swconfig wpad-mini
+  PAGESIZE := 512
+  SUBPAGESIZE := 256
+  BLOCKSIZE := 16KiB
+  KERNEL_SIZE := 4096k
+  FILESYSTEMS := squashfs
+  IMAGES += factory.bin sysupgrade.tar
+  IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi
+  BOARD_NAME := qzt501mv2
+  SUPPORTED_DEVICES += qizhitong,501m_v2
+endef
+TARGET_DEVICES += qizhitong_501m_v2
+
+
 $(eval $(call BuildImage))

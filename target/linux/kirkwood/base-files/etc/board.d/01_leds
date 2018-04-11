@@ -46,6 +46,10 @@ case "$board" in
 	ucidef_set_led_ataport "hdd1" "HDD1" "nsa325:green:sata1" "1"
 	ucidef_set_led_ataport "hdd2" "HDD2" "nsa325:green:sata2" "2"
 	;;
+"qizhitong,501m_v2")
+	ucidef_set_led_default "power" "power" "status:green:power" "1"
+	ucidef_set_led_ataport "hdd" "HDD" "status:orange:hdd" "1"
+	;;
 esac
 
 board_config_flush
