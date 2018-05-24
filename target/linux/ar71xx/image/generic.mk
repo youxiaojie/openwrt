@@ -36,7 +36,7 @@ define Build/mkdapimg2
 	$(STAGING_DIR_HOST)/bin/mkdapimg2 \
 		-i $@ -o $@.new \
 		-s $(DAP_SIGNATURE) \
-		-v $(VERSION_DIST)-$(firstword $(subst -, ,$(REVISION))) \
+		-v $(VERSION_DIST)-$(firstword $(subst +, ,$(firstword $(subst -, ,$(REVISION))))) \
 		-r Default \
 		$(if $(1),-k $(1))
 	mv $@.new $@
@@ -998,6 +998,17 @@ define Device/tellstick-znet-lite
 endef
 TARGET_DEVICES += tellstick-znet-lite
 
+define Device/ts-d084
+  $(Device/tplink-8mlzma)
+  DEVICE_TITLE := PISEN TS-D084
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2
+  BOARDNAME := TS-D084
+  DEVICE_PROFILE := TSD084
+  TPLINK_HWID := 0x07030101
+  CONSOLE := ttyATH0,115200
+endef
+TARGET_DEVICES += ts-d084
+
 define Device/n5q
   DEVICE_TITLE := ALFA Network N5Q
   DEVICE_PACKAGES := rssileds -swconfig
@@ -1282,16 +1293,31 @@ define Device/zbt-we1526
 endef
 TARGET_DEVICES += zbt-we1526
 
-define Device/fritz300e
-  DEVICE_TITLE := AVM FRITZ!WLAN Repeater 300E
-  DEVICE_PACKAGES := fritz-tffs rssileds -swconfig -uboot-envtools
-  BOARDNAME := FRITZ300E
-  SUPPORTED_DEVICES := fritz300e
-  IMAGE_SIZE := 15232k
+define Device/AVM
+  DEVICE_PACKAGES := fritz-tffs -uboot-envtools
   KERNEL := kernel-bin | patch-cmdline | lzma | eva-image
   KERNEL_INITRAMFS := $$(KERNEL)
   IMAGE/sysupgrade.bin := append-kernel | pad-to 64k | \
 	append-squashfs-fakeroot-be | pad-to 256 | \
 	append-rootfs | pad-rootfs | append-metadata | check-size $$$$(IMAGE_SIZE)
 endef
+
+define Device/fritz300e
+  $(call Device/AVM)
+  DEVICE_TITLE := AVM FRITZ!WLAN Repeater 300E
+  DEVICE_PACKAGES := rssileds -swconfig
+  BOARDNAME := FRITZ300E
+  SUPPORTED_DEVICES := fritz300e
+  IMAGE_SIZE := 15232k
+endef
 TARGET_DEVICES += fritz300e
+
+define Device/fritz4020
+  $(call Device/AVM)
+  DEVICE_TITLE := AVM FRITZ!Box 4020
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-usb-storage
+  BOARDNAME := FRITZ4020
+  SUPPORTED_DEVICES := fritz4020
+  IMAGE_SIZE := 15232k
+endef
+TARGET_DEVICES += fritz4020

@@ -483,6 +483,7 @@ platform_check_image() {
 	tl-wr941nd|\
 	tl-wr941nd-v5|\
 	tl-wr941nd-v6|\
+	ts-d084|\
 	wifi-pineapple-nano)
 		local magic_ver="0100"
 
@@ -550,6 +551,7 @@ platform_check_image() {
 	rb-951ui-2hnd|\
 	rb-2011l|\
 	rb-2011il|\
+	rb-2011ils|\
 	rb-2011uas|\
 	rb-2011uas-2hnd|\
 	rb-2011uias|\
@@ -685,6 +687,7 @@ platform_check_image() {
 		;;
 	# these boards use metadata images
 	fritz300e|\
+	fritz4020|\
 	rb-750-r2|\
 	rb-750p-pbr2|\
 	rb-750up-r2|\
@@ -843,6 +846,7 @@ platform_do_upgrade() {
 	rb-951g-2hnd|\
 	rb-951ui-2hnd|\
 	rb-2011il|\
+	rb-2011ils|\
 	rb-2011l|\
 	rb-2011uas|\
 	rb-2011uas-2hnd|\

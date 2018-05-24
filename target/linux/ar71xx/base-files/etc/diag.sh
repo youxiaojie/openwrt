@@ -208,6 +208,7 @@ get_status_led() {
 		;;
 	e600g-v2|\
 	oolite-v5.2-dev|\
+	ts-d084|\
 	wifi-pineapple-nano)
 		status_led="$board:blue:system"
 		;;
@@ -335,6 +336,7 @@ get_status_led() {
 		status_led="$board:green:wan"
 		;;
 	rb-2011il|\
+	rb-2011ils|\
 	rb-2011l|\
 	rb-2011uas|\
 	rb-2011uas-2hnd)

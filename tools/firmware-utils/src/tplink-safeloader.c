@@ -267,6 +267,11 @@ static struct device_info boards[] = {
 		.support_trail = '\x00',
 		.soft_ver = NULL,
 
+		/**
+		    We use a bigger os-image partition than the stock images (and thus
+		    smaller file-system), as our kernel doesn't fit in the stock firmware's
+		    2 MB os-image since kernel 4.14.
+		*/
 		.partitions = {
 			{"SBL1", 0x00000, 0x20000},
 			{"MIBIB", 0x20000, 0x20000},
@@ -279,8 +284,8 @@ static struct device_info boards[] = {
 			{"fs-uboot", 0x100000, 0x70000},
 			{"uboot-env", 0x170000, 0x40000},
 			{"radio", 0x1b0000, 0x40000},
-			{"os-image", 0x1f0000, 0x200000},
-			{"file-system", 0x3f0000, 0x1b00000},
+			{"os-image", 0x1f0000, 0x400000}, /* Stock: base 0x1f0000 size 0x200000 */
+			{"file-system", 0x5f0000, 0x1900000}, /* Stock: base 0x3f0000 size 0x1b00000 */
 			{"default-mac", 0x1ef0000, 0x00200},
 			{"pin", 0x1ef0200, 0x00200},
 			{"product-info", 0x1ef0400, 0x0fc00},
@@ -886,12 +891,12 @@ static struct device_info boards[] = {
 
 		/**
 			The original os-image partition is too small,
-			so we enlarge it to 1.6M
+			so we enlarge it to 1.75M
 		*/
 		.partitions = {
 			{"fs-uboot", 0x00000, 0x20000},
-			{"os-image", 0x20000, 0x1a0000},
-			{"file-system", 0x1c0000, 0x440000},
+			{"os-image", 0x20000, 0x1c0000},
+			{"file-system", 0x1e0000, 0x420000},
 			{"partition-table", 0x600000, 0x02000},
 			{"default-mac", 0x610000, 0x00020},
 			{"pin", 0x610100, 0x00020},
