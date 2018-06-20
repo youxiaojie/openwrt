@@ -476,6 +476,9 @@ ar71xx_board_detect() {
 	*"Archer C7 v4")
 		name="archer-c7-v4"
 		;;
+	*"Archer C7 v5")
+		name="archer-c7-v5"
+		;;
 	*"Archer C58 v1")
 		name="archer-c58-v1"
 		;;
@@ -715,6 +718,9 @@ ar71xx_board_detect() {
 	*"FRITZ!WLAN Repeater 300E")
 		name="fritz300e"
 		;;
+	*"FRITZ!WLAN Repeater 450E")
+		name="fritz450e"
+		;;
 	*"GL-AR150")
 		name="gl-ar150"
 		;;
@@ -726,6 +732,9 @@ ar71xx_board_detect() {
 		;;
 	*"GL-AR750")
 		name="gl-ar750"
+		;;
+	*"GL-AR750S")
+		name="gl-ar750s"
 		;;
 	*"GL-CONNECT INET v1")
 		name="gl-inet"
@@ -764,6 +773,9 @@ ar71xx_board_detect() {
 		;;
 	*"JWAP230")
 		name="jwap230"
+		;;
+	*"Koala")
+		name="koala"
 		;;
 	*"LAN Turtle")
 		name="lan-turtle"
@@ -1072,6 +1084,9 @@ ar71xx_board_detect() {
 		;;
 	*"RouterBOARD wAP 2nD r2")
 		name="rb-wap-2nd"
+		;;
+	*"RouterBOARD wAP R-2nD")
+		name="rb-wapr-2nd"
 		;;
 	*"RouterBOARD wAP G-5HacT2HnD")
 		name="rb-wapg-5hact2hnd"

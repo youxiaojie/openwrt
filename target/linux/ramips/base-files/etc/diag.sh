@@ -22,11 +22,13 @@ get_status_led() {
 	dch-m225|\
 	dir-860l-b1|\
 	e1700|\
+	elecom,wrc-1167ghbk2-s|\
 	ex2700|\
 	ex3700|\
 	fonera20n|\
 	firewrt|\
 	hg255d|\
+	iodata,wn-gx300gr|\
 	kn|\
 	kn_rc|\
 	kn_rf|\
@@ -41,6 +43,7 @@ get_status_led() {
 	tplink,c20-v4|\
 	tplink,c50-v3|\
 	tplink,tl-mr3420-v5|\
+	tplink,tl-wr842n-v5|\
 	tplink,tl-wr902ac-v3|\
 	tl-wr840n-v4|\
 	tl-wr840n-v5|\
@@ -95,7 +98,7 @@ get_status_led() {
 	dir-620-d1|\
 	dwr-512-b|\
 	dlink,dwr-116-a1|\
-	gb-pc1|\
+	gnubee,gb-pc1|\
 	gnubee,gb-pc2|\
 	hpm|\
 	hw550-3g|\
