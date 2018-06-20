@@ -212,6 +212,7 @@ platform_check_image() {
 	archer-c60-v1|\
 	archer-c60-v2|\
 	archer-c7-v4|\
+	archer-c7-v5|\
 	bullet-m|\
 	c-55|\
 	carambola2|\
@@ -260,6 +261,7 @@ platform_check_image() {
 	gl-ar300m|\
 	gl-ar300|\
 	gl-ar750|\
+	gl-ar750s|\
 	gl-domino|\
 	gl-mifi|\
 	gl-usb150|\
@@ -688,6 +690,8 @@ platform_check_image() {
 	# these boards use metadata images
 	fritz300e|\
 	fritz4020|\
+	fritz450e|\
+	koala|\
 	rb-750-r2|\
 	rb-750p-pbr2|\
 	rb-750up-r2|\
@@ -701,7 +705,8 @@ platform_check_image() {
 	rb-map-2nd|\
 	rb-mapl-2nd|\
 	rb-wap-2nd|\
-	rb-wapg-5hact2hnd)
+	rb-wapg-5hact2hnd|\
+	rb-wapr-2nd)
 		return 0
 		;;
 	esac
@@ -727,7 +732,8 @@ platform_pre_upgrade() {
 	rb-map-2nd|\
 	rb-mapl-2nd|\
 	rb-wap-2nd|\
-	rb-wapg-5hact2hnd)
+	rb-wapg-5hact2hnd|\
+	rb-wapr-2nd)
 		# erase firmware if booted from initramfs
 		[ -z "$(rootfs_type)" ] && mtd erase firmware
 		;;
