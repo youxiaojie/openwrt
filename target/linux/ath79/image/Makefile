@@ -75,6 +75,8 @@ ifeq ($(SUBTARGET),nand)
 include ./nand.mk
 endif
 ifeq ($(SUBTARGET),tiny)
+include ./tiny.mk
+include ./tiny-netgear.mk
 include ./tiny-tp-link.mk
 endif
 $(eval $(call BuildImage))
