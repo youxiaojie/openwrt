@@ -40,8 +40,8 @@ define Device/DniImage
 	NETGEAR_BOARD_ID :=
 	NETGEAR_HW_ID :=
 	IMAGES := factory.img sysupgrade.bin
-	IMAGE/factory.img := append-kernel | pad-offset 64k 64 | append-uImage-fakehdr filesystem | pad-to $$$$(KERNEL_SIZE) | append-rootfs | pad-rootfs | netgear-dni
-	IMAGE/sysupgrade.bin := append-kernel | pad-offset 64k 64 | append-uImage-fakehdr filesystem | pad-to $$$$(KERNEL_SIZE) | append-rootfs | pad-rootfs | append-metadata
+	IMAGE/factory.img := append-kernel | pad-offset 64k 64 | append-uImage-fakehdr filesystem | append-rootfs | pad-rootfs | netgear-dni
+	IMAGE/sysupgrade.bin := append-kernel | pad-offset 64k 64 | append-uImage-fakehdr filesystem | append-rootfs | pad-rootfs | append-metadata
 endef
 DEVICE_VARS += NETGEAR_BOARD_ID NETGEAR_HW_ID
 
@@ -82,12 +82,12 @@ define Device/avm_fritzbox-4040
 	BOARD_NAME := fritz4040
 	DEVICE_TITLE := AVM Fritz!Box 4040
 	IMAGE_SIZE := 29753344
-	UBOOT_PATH := $$(BIN_DIR)/u-boot-fritz4040/uboot-fritz4040.bin
+	UBOOT_PATH := $(STAGING_DIR_IMAGE)/uboot-fritz4040.bin
 	UBOOT_PARTITION_SIZE := 524288
 	IMAGES = eva.bin sysupgrade.bin
 	IMAGE/eva.bin := append-uboot | pad-to $$$$(UBOOT_PARTITION_SIZE) | append-kernel | append-rootfs | pad-rootfs
 	IMAGE/sysupgrade.bin := append-kernel | append-rootfs | pad-rootfs | append-metadata
-	DEVICE_PACKAGES := fritz-tffs fritz-caldata u-boot-fritz4040
+	DEVICE_PACKAGES := fritz-tffs fritz-caldata
 endef
 TARGET_DEVICES += avm_fritzbox-4040
 
@@ -104,6 +104,20 @@ define Device/compex_wpj428
 	DEVICE_PACKAGES := kmod-gpio-beeper
 endef
 TARGET_DEVICES += compex_wpj428
+
+define Device/engenius_eap1300
+	$(call Device/FitImage)
+	DEVICE_TITLE := EnGenius EAP1300
+	DEVICE_DTS_CONFIG := config@4
+	BOARD_NAME := eap1300
+	DEVICE_DTS := qcom-ipq4018-eap1300
+	KERNEL_SIZE := 5120k
+	IMAGE_SIZE := 25344k
+	IMAGES := sysupgrade.bin
+	IMAGE/sysupgrade.bin := append-kernel | append-rootfs | pad-rootfs | append-metadata
+	DEVICE_PACKAGES := ipq-wifi-engenius_eap1300
+endef
+TARGET_DEVICES += engenius_eap1300
 
 define Device/glinet_gl-b1300
 	$(call Device/FitImage)
@@ -124,13 +138,12 @@ define Device/meraki_mr33
 	PAGESIZE := 2048
 	DEVICE_TITLE := Cisco Meraki MR33
 	IMAGES = sysupgrade.bin
-	DEVICE_PACKAGES := -swconfig ath10k-firmware-qca9887
+	DEVICE_PACKAGES := -swconfig ath10k-firmware-qca9887-ct
 endef
 TARGET_DEVICES += meraki_mr33
 
 define Device/netgear_ex61x0v2
 	$(call Device/DniImage)
-	KERNEL_SIZE := 3080192
 	DEVICE_DTS_CONFIG := config@4
 	NETGEAR_BOARD_ID := EX6150v2series
 	NETGEAR_HW_ID := 29765285+16+0+128+2x2
@@ -176,7 +189,7 @@ define Device/openmesh_a62
 	IMAGES = factory.bin sysupgrade.bin
 	IMAGE/factory.bin := append-rootfs | pad-rootfs | openmesh-image ce_type=A62
 	IMAGE/sysupgrade.bin/squashfs := append-rootfs | pad-rootfs | sysupgrade-tar rootfs=$$$$@ | append-metadata
-	DEVICE_PACKAGES := ath10k-firmware-qca9888 uboot-envtools
+	DEVICE_PACKAGES := ath10k-firmware-qca9888-ct uboot-envtools
 endef
 
 TARGET_DEVICES += openmesh_a62
@@ -223,7 +236,7 @@ define Device/zyxel_nbg6617
 #	this minimum-size. However, the larger image can be flashed both ways.
 	IMAGE/factory.bin := append-rootfs | pad-rootfs | pad-to 64k | check-size $$$$(ROOTFS_SIZE) | zyxel-ras-image separate-kernel
 	IMAGE/sysupgrade.bin/squashfs := append-rootfs | pad-rootfs | check-size $$$$(ROOTFS_SIZE) | sysupgrade-tar rootfs=$$$$@ | append-metadata
-	DEVICE_PACKAGES := ipq-wifi-zyxel_nbg6617 uboot-envtools
+	DEVICE_PACKAGES := uboot-envtools kmod-usb-ledtrig-usbport
 endef
 TARGET_DEVICES += zyxel_nbg6617
 
@@ -232,7 +245,6 @@ define Device/zyxel_wre6606
 	DEVICE_TITLE := ZyXEL WRE6606
 	DEVICE_DTS_CONFIG := config@4
 	DEVICE_DTS := qcom-ipq4018-wre6606
-	DEVICE_PACKAGES := ipq-wifi-zyxel_wre6606
 	IMAGES := sysupgrade.bin
 	IMAGE/sysupgrade.bin := append-kernel | append-rootfs | pad-rootfs | append-metadata
 endef
