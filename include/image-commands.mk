@@ -131,16 +131,6 @@ define Build/tplink-safeloader
 		$(if $(findstring sysupgrade,$(word 1,$(1))),-S) && mv $@.new $@ || rm -f $@
 endef
 
-define Build/mksercommfw
-	-$(STAGING_DIR_HOST)/bin/mksercommfw \
-		$@ \
-		$(KERNEL_OFFSET) \
-		$(HWID) \
-		$(HWVER) \
-		$(SWVER)
-endef
-
-
 define Build/append-dtb
 	cat $(KDIR)/image-$(firstword $(DEVICE_DTS)).dtb >> $@
 endef
@@ -176,6 +166,16 @@ endef
 define Build/gzip
 	gzip -f -9n -c $@ $(1) > $@.new
 	@mv $@.new $@
+endef
+
+define Build/zip
+	mkdir $@.tmp
+	mv $@ $@.tmp/$(1)
+
+	zip -j -X \
+		$(if $(SOURCE_DATE_EPOCH),--mtime="$(SOURCE_DATE_EPOCH)") \
+		$@ $@.tmp/$(if $(1),$(1),$@)
+	rm -rf $@.tmp
 endef
 
 define Build/jffs2
@@ -272,6 +272,13 @@ define Build/combined-image
 		"$@" \
 		"$@.new"
 	@mv $@.new $@
+endef
+
+define Build/linksys-image
+	$(TOPDIR)/scripts/linksys-image.sh \
+		"$(call param_get_default,type,$(1),$(DEVICE_NAME))" \
+		$@ $@.new
+		mv $@.new $@
 endef
 
 define Build/openmesh-image

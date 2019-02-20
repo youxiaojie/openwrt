@@ -9,9 +9,9 @@
 include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
-PKG_VERSION:=2018.05
+PKG_VERSION:=2018.11
 
-PKG_HASH:=4da13c2a6139a78cc08608f21fd4741db27eda336cfad7ab8264fda923b9c048
+PKG_HASH:=737c93f2ea03fec669e840dbee32bcf6238e6924ff5f20e4f1c472ee24e5d37e
 
 PKG_MAINTAINER:=Zoltan HERPAI <wigyori@uid0.hu>
 
@@ -204,6 +204,12 @@ define U-Boot/pine64_plus
   UENV:=a64
 endef
 
+define U-Boot/Sinovoip_BPI_M2_Plus
+  BUILD_SUBTARGET:=cortexa7
+  NAME:=Bananapi M2 Plus
+  BUILD_DEVICES:=sun8i-h3-bananapi-m2-plus
+endef
+
 define U-Boot/sopine_baseboard
   BUILD_SUBTARGET:=cortexa53
   NAME:=Sopine Baseboard
@@ -260,6 +266,7 @@ UBOOT_TARGETS := \
 	orangepi_pc2 \
 	pangolin \
 	pine64_plus \
+	Sinovoip_BPI_M2_Plus \
 	sopine_baseboard \
 	orangepi_zero_plus
 
